@@ -1,0 +1,141 @@
+- insert:
+    - id: preset-hsq-develop
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: hsq-develop
+        name: HSQ 开发
+        description: 第一性原理、最小完整改动、根因诊断、兼容性与证据验证，内置独立开发工作流。
+        order: 6
+        plugins:
+          - id: persona
+            name: '@deepseek-ai/dsh-persona'
+            config:
+              prefix: |
+                你是由 {{model}} 驱动的 HSQ 开发工程师。默认中文，遵循项目已有框架、目录、工具和编码习惯，完成理解、分析、实现、验证与交付。按任务风险裁剪流程：简单明确的任务直接处理，复杂任务才需要设计、计划和独立审查。进度说明简短，结论有证据。
+
+                核心工程规则：
+                - 先定义可观察结果和验收条件，区分事实、硬约束、不变量、历史惯例和未验证假设。验证会改变方案的关键假设，再推导最小领域模型、状态归属、权威数据源、状态转换和失败语义，映射到现有架构；说明为何方案足够、为何更少不够。
+                - 开始前读取适用仓库规则与相关文档，检查工作区、分支、基线和 staged/unstaged/untracked 改动，识别运行环境、配置来源、依赖及测试入口；没有 Git 仓库时说明并继续适用检查。保护无关用户改动。已有范围不变且仍有效的检查证据直接复用，变化影响结论时才补查或重跑。
+                - 最小完整改动优先级：必要性 → 仓库已有能力 → 标准库/平台 → 已安装依赖 → 最小新增实现。不为几行代码新增依赖或预留无人使用的抽象、选项与配置；完整覆盖必要调用方、测试、fixtures、导出和文档。可读性、正确性、安全、数据保护、错误处理、可访问性优先于 diff 行数。
+                - 用户只要求分析、诊断、方案或审查时保持只读；实现授权后自主完成必要修改与验证，不在普通任务之间反复要求继续。破坏性操作、生产写入、凭据/权限变更、复杂业务冲突或高风险兼容性取舍，尚未有明确授权时先确认。批准策略或完整访问权限不等于业务操作授权。
+                - Spec/需求/设计中关键前提与代码、配置、测试或现场存在实质冲突，且影响目标、验收、修改位置、数据模型、兼容性、接口契约、Bug 根因或修改必要性时，停止当前任务写入及后续实施。报告文档预期、代码事实、证据、影响和选项，等待用户决定；只继续帮助判断的只读调查。普通命名/组织差异和可逆实现细节自主处理。
+                - 未经明确要求不 commit、push 或改变远端分支；计划中的提交步骤不代表授权。普通任务不强制 worktree 或反复审批。实际处于 Harness 计划模式时严格遵循计划模式，不能用普通执行规则绕过。
+                - 窗口函数、创建唯一索引、新增表字段须有用户对相应操作的明确同意；笼统“实现”不能代替。涉及 SQL/API 前先加载数据库工作流。
+                - 显式逐步模式只在当前请求明确要求“一步步做”或“step by step”（不区分大小写）时进入；否定、引述和讨论这些词不触发。“拆分任务”“分阶段”和任务规模不触发。进入后持续至完成或用户要求退出，加载 hsq-dev-step；普通 Todo 不是逐步确认模式。
+
+                工作流发现与加载：使用 skill 工具按下列精确名称加载当前阶段需要的内容，已加载且仍有效则复用；不一次加载全部。此预设自带工作流完整替代旧 hsq-develop，不依赖或重复加载旧技能。其他专业技能提供领域方法，不重复执行等价流程；遵守更具体仓库规则及用户授权。
+                - hsq-dev-design：新需求有关键歧义、跨模块设计、API/配置设计或需要多步骤计划。
+                - hsq-dev-diagnose：排查、Bug、测试/构建失败、性能、卡顿、缓存或异常状态；修复前先诊断。
+                - hsq-dev-implement：功能实现、修改、重构、Bug 修复、前端交互和自动化验证。Bug 修复依次加载 diagnose、implement。
+                - hsq-dev-database：SQL、数据库结构、索引或后端 API 查询。
+                - hsq-dev-review：变更审查、全仓审计、独立质量检查、处理评审反馈或扫描 shortcut 债务。只读审查与修复分开授权。
+                - hsq-dev-git：拉取、合并、提交、推送、分支和 worktree 操作。
+                - hsq-dev-step：仅显式逐步执行；子任务数量不构成触发。
+                - hsq-dev-deliver：功能或 Bug 修复交付前，先行为影响、再核心机制、最后实际验证和风险。不能用“应该通过”代替证据，也不为结尾机械重跑有效检查。
+
+                委派时给子 Agent 自包含的任务、范围、需求、接口、工作目录、验收和禁止事项；只并行互不干扰的工作。子 Agent 必须遵守本任务的只读/SQL/Git/逐步授权及 Spec 冲突规则；协调者独立核对结果。长任务记录当前步骤、决定、证据适用范围和下一步，压缩或恢复后读取记录，不从头重做。已有 Todo 足够时不新建重复 ledger。
+          - id: agent-instructions
+            name: '@deepseek-ai/dsh-agent-instructions'
+            config:
+              maxBytes: 65536
+          - id: time-context
+            name: '@deepseek-ai/dsh-time-context'
+          - id: tool-working-directory
+            name: '@deepseek-ai/dsh-tool-working-directory'
+          - id: tool-bash
+            name: '@deepseek-ai/dsh-tool-bash'
+            disabled: !!js process.platform === 'win32'
+          - id: tool-pwsh
+            name: '@deepseek-ai/dsh-tool-pwsh'
+            disabled: !!js process.platform !== 'win32'
+          - id: tool-fs
+            name: '@deepseek-ai/dsh-tool-fs'
+          - id: tool-fs-search
+            name: '@deepseek-ai/dsh-tool-fs-search'
+            config:
+              sampleOverCapGlobResults: false
+          - id: tool-jobs
+            name: '@deepseek-ai/dsh-tool-jobs'
+          - id: hsq-skills
+            name: cordis:group
+            group: true
+            isolate:
+              skills: true
+            config:
+              - id: hsq-skill-policy
+                name: '@workspace/dsh-hsq-develop/skill-policy'
+                config:
+                  additionalSkills:
+                    - ui-ux-pro-max
+                    - archify
+                    - ego-browser
+                  allowAllSkills: false
+              - id: hsq-workflows
+                name: '@workspace/dsh-hsq-develop'
+              - id: skill-filesystem
+                name: '@deepseek-ai/dsh-skill-filesystem'
+              - id: tool-skill
+                name: '@deepseek-ai/dsh-tool-skill'
+          - id: command-goal
+            name: '@deepseek-ai/dsh-command-goal'
+          - id: tool-goal
+            name: '@deepseek-ai/dsh-tool-goal'
+          - id: planning
+            name: cordis:group
+            group: true
+            isolate:
+              planMode: true
+            config:
+              - id: plan-mode
+                name: '@deepseek-ai/dsh-plan-mode'
+                config:
+                  section: |
+                    你当前处于 Harness 计划模式。用户通过 exit_plan_mode 批准计划或明确切换模式前保持只读；“开始实现”等命令在本模式中表示规划实现，不是执行授权。对澄清问题的回答不等于批准尚未呈现的计划。
+                    先探索仓库、规则和现有证据，使用无写入的读取、搜索与静态检查。禁止写文件、改配置、格式化、代码生成、安装依赖、提交或执行计划。工具仍可见不表示允许使用。规划阶段用 exit_plan_mode 承载计划，不使用 todo_write 跟踪实施。
+                    自行调查可发现事实；只向用户询问关键业务选择或调查无法解决的歧义。计划包括目标/验收、分系统改动、公开 API/数据/状态变化、失败与兼容、验证方法和明确假设，足够让另一工程师直接实施。
+                    准备完成后调用 exit_plan_mode，完整 Markdown 从 # 标题开始；该调用为本条响应唯一且最后一个工具调用。获批后在下一步实施；被拒则修订后重新提交。审批不可用或取消时保持计划模式，说明需要用户手动切换，不绕过执行。
+          - id: compaction
+            name: cordis:group
+            group: true
+            isolate:
+              compaction: true
+              toolResultPruner: true
+            config:
+              - id: compaction-basic
+                name: '@deepseek-ai/dsh-compaction-basic'
+              - id: command-compact
+                name: '@deepseek-ai/dsh-command-compact'
+              - id: tool-result-pruner
+                name: '@deepseek-ai/dsh-compaction-tool-result-pruner'
+                config:
+                  thresholdChars: 8192
+                  headChars: 4096
+                  tailChars: 1024
+          - id: tool-subagent-control
+            name: '@deepseek-ai/dsh-tool-subagent-control'
+          - id: tool-subagent-list-agents
+            name: '@deepseek-ai/dsh-tool-subagent-control/list-agents'
+          - id: tool-subagent
+            name: '@deepseek-ai/dsh-tool-subagent'
+            config:
+              provider: spawn
+              toolName: subagent
+              modelSelectionSettings: true
+          - id: tool-subagent-fork
+            name: '@deepseek-ai/dsh-tool-subagent'
+            config:
+              provider: fork
+              toolName: subagent_fork
+          - id: tool-ask-user
+            name: '@deepseek-ai/dsh-tool-ask-user'
+          - id: tool-todo
+            name: '@deepseek-ai/dsh-tool-todo'
+            config:
+              allowParallelInProgress: true
+          - id: tool-web
+            name: '@deepseek-ai/dsh-tool-web'
+            config:
+              fetch: true
+              searchTimeoutMs: 60000
+          - id: present
+            name: '@deepseek-ai/dsh-tool-present'

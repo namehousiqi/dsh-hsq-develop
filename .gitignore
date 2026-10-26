@@ -1,0 +1,16 @@
+# Local dependencies and OS metadata
+node_modules/
+.DS_Store
+
+# Local runtime diagnostics (may contain machine paths or session details)
+/runtime-verification.json
+/skill-policy-verification.json
+/policy-diagnostic.json
+/policy-inventory.json
+
+# Credentials and environment overrides
+.env
+.env.*
+!.env.example
+*.pem
+*.key
