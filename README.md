@@ -6,7 +6,7 @@
 
 ## 工作方式
 
-- **先理解，再实现。** 核实需求前提、调用链与状态归属，定位根因，评估兼容性与影响范围。
+- **追到机制，验证根因。** 沿调用链和状态来源持续取证，用复现、对照与反证区分假设和已确认原因；只读诊断也完成必要调查。
 - **流程与风险相称。** 简单任务直接完成，复杂任务按需设计、拆分、委派与审查。
 - **验证真实行为。** 复用有效证据，为新增逻辑与缺陷补足相关验证，明确未验证范围。
 - **授权边界清晰。** 分析与审查保持只读；提交、推送及特定数据库操作遵循明确授权。仅在要求“一步步做”时逐步确认。
@@ -30,7 +30,7 @@ github:namehousiqi/dsh-hsq-develop
 | 工作流 | 职责 |
 | --- | --- |
 | `hsq-dev-design` | 需求澄清、设计、实施计划与任务委派 |
-| `hsq-dev-diagnose` | 根因分析、故障排查与性能测量 |
+| `hsq-dev-diagnose` | 持续调查、竞争解释验证、根因确认与性能测量 |
 | `hsq-dev-implement` | 最小完整实现、兼容性检查与行为验证 |
 | `hsq-dev-database` | SQL、数据模型、索引与 API 查询策略 |
 | `hsq-dev-review` | 变更审查、全仓审计与评审反馈 |
@@ -67,7 +67,10 @@ github:namehousiqi/dsh-hsq-develop
 node --check index.js
 node --check skill-policy-runtime.js
 node --test test/*.test.js
+node evals/verify-fixture.mjs
 ```
+
+诊断行为评估说明见 [evals/README.md](evals/README.md)。
 
 推送源码后，通过 Harness 更新安装；运行中的预设不会随 Git 推送自动更新。
 

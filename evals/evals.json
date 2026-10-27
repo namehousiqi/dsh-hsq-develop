@@ -1,0 +1,19 @@
+{
+  "skill_name": "hsq-dev-diagnose",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "同一个标签页从 alpha 切到 beta 再刷新后任务列表偶发空，支持后台能看到数据，重开标签页暂时恢复，怀疑缓存。请查清根源和触发条件，不修改程序。",
+      "expected_output": "实际追踪 client/controller/replay/store 与日志，运行内存复现和反例，区分跨租户游标复用、刷新清空投影与增量回放不匹配，排除缓存和持久化丢失，报告证据、范围和确定程度。",
+      "files": ["diagnosis-fixture/README.md", "diagnosis-fixture/client.mjs", "diagnosis-fixture/controller.mjs", "diagnosis-fixture/replay.mjs", "diagnosis-fixture/store.mjs", "diagnosis-fixture/incident.log", "diagnosis-fixture/recovery.test.mjs"],
+      "expectations": [
+        "实际执行能够复现 alpha→beta 空列表并对照 beta 存储仍有数据的实验",
+        "追至 ReplayPool 按 connectionId 复用游标而序号按租户独立的责任点，给出精确传播路径",
+        "实际检验缓存解释，给出 clearCache 无效或恢复路径不经过缓存的可验证证据",
+        "检验首次打开/新连接与同连接刷新边界，识别清空客户端状态却使用增量游标的独立问题",
+        "使用执行结果而非仅建议下一步，说明关键实验及结果和结论确定程度",
+        "不修改 fixture，不把仅隔离租户游标当作完整刷新恢复修复"
+      ]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "name": "@workspace/dsh-hsq-develop",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "private": true,
   "type": "module",
   "description": "HSQ development preset with scoped engineering workflows, verification, and personal delivery rules.",

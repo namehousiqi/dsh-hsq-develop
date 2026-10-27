@@ -1,0 +1,8 @@
+12:10:00 connection=tab-7 route=recover tenant=alpha events=2
+12:10:00 browser tenant=alpha items=1
+12:12:00 connection=tab-7 action=switch tenant=beta
+12:12:00 connection=tab-7 route=recover tenant=beta events=0
+12:12:00 browser tenant=beta items=0
+12:13:00 support route=latest tenant=beta cached=false items=2
+12:14:00 connection=tab-7 action=refresh tenant=beta events=0 items=0
+12:15:00 connection=tab-8 route=recover tenant=beta events=2 items=2
