@@ -1,6 +1,10 @@
 - insert:
+    - id: hsq-skill-settings
+      name: '@workspace/dsh-hsq-develop'
+      config:
+        settingsUI: true
     - id: preset-hsq-develop
-      name: '@deepseek-ai/dsh-agent-preset'
+      name: '@workspace/dsh-hsq-develop/preset'
       config:
         id: hsq-develop
         name: HSQ 开发

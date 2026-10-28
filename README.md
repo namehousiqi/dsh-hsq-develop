@@ -38,27 +38,15 @@ github:namehousiqi/dsh-hsq-develop
 | `hsq-dev-step` | 显式逐步执行与阶段验收 |
 | `hsq-dev-deliver` | 行为影响、核心机制与验证结果 |
 
-## 技能白名单
+## 管理外部技能
 
-每个预设使用独立技能目录。内置 8 项始终保留，外部技能按名称开放。
+打开 Harness **设置 → HSQ 开发**，点击“添加技能”，搜索本机技能并勾选。列表支持启停、移除和保存；八个内置工作流始终保留。
 
-在 [cordis.patch.yml](cordis.patch.yml) 中修改 `hsq-skill-policy`：
+首次升级保留 `ui-ux-pro-max`、`archify`、`ego-browser`、`choerodon-kanban` 四项选择。项目技能可通过“选择项目目录”发现；未找到的已选技能会保留配置，直到对应目录可用。
 
-```yaml
-- id: hsq-skill-policy
-  name: '@workspace/dsh-hsq-develop/skill-policy'
-  config:
-    additionalSkills:
-      - ui-ux-pro-max
-      - archify
-      - ego-browser
-      - choerodon-kanban
-    allowAllSkills: false
-```
+保存后在新会话中生效，已有会话保留原预设修订。个人选择由 Harness profile 单独持久保存，不修改本仓库，也不会用旧的预设副本覆盖后续规则升级。停用保留选择，移除仅取消关联，不删除文件。
 
-以上为当前配置，外部技能需另行安装。`additionalSkills: []` 仅保留内置工作流；`allowAllSkills: true` 开放所有已发现技能。白名单同时控制目录与技能加载，不改变文件或工具权限。
-
-重新应用配置后，在新会话中使用；已有会话保留原预设修订。
+这里管理已安装的本地技能，不负责下载或安装。选择同时控制预设内的目录与加载入口，不改变文件或工具权限。首次升级若安装器提示重启，重启 DSH 后再打开设置页面。
 
 ## 开发
 

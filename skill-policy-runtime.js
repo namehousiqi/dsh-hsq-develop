@@ -7,5 +7,9 @@ export function apply(ctx, config = {}) {
     throw new Error('HSQ skill policy requires the Host skill registry')
   }
   const PolicyRegistry = withSkillPolicy(hostRegistry.constructor)
-  new PolicyRegistry(ctx, config)
+  const registry = new PolicyRegistry(ctx, config)
+  const manager = ctx.root.get('hsqSkillSettings')
+  if (manager && config.managementRevision) {
+    ctx.effect(() => manager.registerCatalog(config.managementRevision, options => hostRegistry.constructor.prototype.snapshot.call(registry, options)))
+  }
 }

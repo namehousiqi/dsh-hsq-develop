@@ -1,19 +1,29 @@
 {
   "name": "@workspace/dsh-hsq-develop",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "description": "HSQ development preset with scoped engineering workflows, verification, and personal delivery rules.",
   "engines": { "dsh": ">=0.2.1-rc.2 <0.2.2-0" },
   "exports": {
     ".": "./index.js",
+    "./settings": "./skill-settings-runtime.js",
+    "./client": "./skill-settings-client.js",
+    "./settings/locale/*.json": "./locale/*.json",
+    "./settings/icon": "./icon.svg",
+    "./preset": "./preset-runtime.js",
+    "./preset/locale/*.json": "./locale/*.json",
+    "./preset/icon": "./icon.svg",
     "./skill-policy": "./skill-policy-runtime.js",
     "./skill-policy/locale/*.json": "./locale/*.json",
     "./skill-policy/icon": "./icon.svg",
     "./locale/*.json": "./locale/*.json",
     "./icon": "./icon.svg"
   },
-  "files": ["index.js", "skill-policy-runtime.js", "skill-policy-core.js", "cordis.patch.yml", "skills", "locale", "icon.svg", "README.md", "MIGRATION.md", "THIRD_PARTY_NOTICES.md"],
-  "dsh": { "bundle": { "patch": "./cordis.patch.yml" } },
+  "files": ["index.js", "preset-runtime.js", "skill-settings-runtime.js", "skill-settings-core.js", "skill-settings-client.js", "skill-policy-runtime.js", "skill-policy-core.js", "cordis.patch.yml", "skills", "locale", "icon.svg", "README.md", "MIGRATION.md", "THIRD_PARTY_NOTICES.md"],
+  "dsh": {
+    "bundle": { "patch": "./cordis.patch.yml" },
+    "client": { "platform": "web", "inject": ["@deepseek-ai/dsh-client-runtime", "@deepseek-ai/dsh-client-ui-settings", "@deepseek-ai/dsh-client-ui-workspace"] }
+  },
   "scripts": { "check": "node --check index.js && node --test test/*.test.js" }
 }

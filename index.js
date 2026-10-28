@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
+import { apply as applySettings, inject as settingsServices } from './skill-settings-runtime.js'
 
 export const name = 'hsq-development-workflows'
 export const inject = ['skills']
@@ -30,7 +31,9 @@ export function loadWorkflows() {
 }
 
 /** Register only in the selecting preset's scope; dispose all registrations on unload or rollback. */
-export function apply(ctx) {
+export function apply(ctx, config = {}) {
+  // The Host row owns the settings UI; scoped rows only register the eight workflows.
+  if (config.settingsUI === true) return ctx.inject(settingsServices, child => applySettings(child, config))
   const workflows = loadWorkflows()
   return ctx.effect(() => {
     const disposers = []

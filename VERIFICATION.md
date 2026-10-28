@@ -1,5 +1,14 @@
 # 验证记录
 
+## 0.3.0 外部技能设置（2026-10-28）
+
+- 新增原生 Settings → HSQ 开发，提供名称/说明搜索、多项添加、启停、移除、目录选择、内置工作流只读清单、保存/取消及中英文本。
+- 16 项 Node 测试通过，覆盖原技能策略、四项默认选择迁移、空选择、停用/移除区别、内置保护、非法输入、并发冲突、私有目录读取与 lease 清理、声明生命周期、HTTP 认证/身份/JSON/大小检查。
+- 使用已安装 Harness 的 Electron Node 模式运行 test/runtime-integration.mjs，以真实 Cordis Context、Loader、skills、agentPresets 和 scope 完成挂载与保存重载验证；没有启动服务器、模型会话或写入真实 profile。外部 provider 使用两项固定测试技能；发现目录可见未选技能，模型目录只见已启用项；清空后新作用域仅保留8内置项，旧作用域仍能加载原已选技能；全局目录没有泄漏，路由重载没有重复注册。
+- 该集成检查发现并修正了依赖重载时序：profile reconcile 返回后，预设 owner 仍可能在挂载。保存接口等待新 owner 就绪，并继续检查原生预设诊断后才返回成功。
+- 页面只使用主题 token、原生 settings.section 与 Host 目录选择器。Client JavaScript 语法及 bundle 导出已检查；尚未完成当前 GUI 的实际渲染、明暗主题和点击往返验证。
+- 本地链接安装成功，但安装器返回 application=restart-required、restartReason=unmanaged-plugin。当前进程的旧插件仍在运行；必须重启 DSH 后检查新服务、真实 slot 和页面行为。不能将上述隔离集成测试当成当前 GUI 已生效的证据。
+
 ## 0.2.2 根因诊断深度（2026-10-27）
 
 - 常驻规则区分最小改动与调查深度，诊断在可执行且影响结论的证据检查未完成时继续推进。
