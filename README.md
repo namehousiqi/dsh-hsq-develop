@@ -52,6 +52,7 @@ github:namehousiqi/dsh-hsq-develop
       - ui-ux-pro-max
       - archify
       - ego-browser
+      - choerodon-kanban
     allowAllSkills: false
 ```
 

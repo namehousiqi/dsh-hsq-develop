@@ -70,6 +70,7 @@
                     - ui-ux-pro-max
                     - archify
                     - ego-browser
+                    - choerodon-kanban
                   allowAllSkills: false
               - id: hsq-workflows
                 name: '@workspace/dsh-hsq-develop'
