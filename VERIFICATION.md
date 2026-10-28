@@ -6,6 +6,7 @@
 - 16 项 Node 测试通过，覆盖原技能策略、四项默认选择迁移、空选择、停用/移除区别、内置保护、非法输入、并发冲突、私有目录读取与 lease 清理、声明生命周期、HTTP 认证/身份/JSON/大小检查。
 - 使用已安装 Harness 的 Electron Node 模式运行 test/runtime-integration.mjs，以真实 Cordis Context、Loader、skills、agentPresets 和 scope 完成挂载与保存重载验证；没有启动服务器、模型会话或写入真实 profile。外部 provider 使用两项固定测试技能；发现目录可见未选技能，模型目录只见已启用项；清空后新作用域仅保留8内置项，旧作用域仍能加载原已选技能；全局目录没有泄漏，路由重载没有重复注册。
 - 该集成检查发现并修正了依赖重载时序：profile reconcile 返回后，预设 owner 仍可能在挂载。保存接口等待新 owner 就绪，并继续检查原生预设诊断后才返回成功。
+- 追加 test/profile-persistence-integration.mjs，使用真实 Config Editor、root Include、临时 bundle/profile 及原生 profile reconcile 写盘；验证四项初始迁移、启停/缺失选择持久保存、完整 runtime 重启恢复，以及 bundle 更新后新预设定义生效且个人选择/patch 不变。持久 patch 不含整份预设，根配置未改写。临时目录在 finally 中验证归属后清理；未改动用户 profile，也未启动替代服务器。
 - 页面只使用主题 token、原生 settings.section 与 Host 目录选择器。Client JavaScript 语法及 bundle 导出已检查；尚未完成当前 GUI 的实际渲染、明暗主题和点击往返验证。
 - 继续验证时，实时 settings.section 仍无 hsq-develop 入口。ego-browser 在当前 GUI URL 返回 authentication required，已 handOff 给用户，未尝试读取认证令牌或绕过登录；浏览器验证需重启及登录后继续。源码检查修正了项目目录切换失败时标签先更新、目录结果仍为旧值的问题，现在成功读取后才切换标签。
 - 本地链接安装成功，但安装器返回 application=restart-required、restartReason=unmanaged-plugin。当前进程的旧插件仍在运行；必须重启 DSH 后检查新服务、真实 slot 和页面行为。不能将上述隔离集成测试当成当前 GUI 已生效的证据。

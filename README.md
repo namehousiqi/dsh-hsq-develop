@@ -59,6 +59,8 @@ node --test test/*.test.js
 node evals/verify-fixture.mjs
 ```
 
+两个原生集成检查位于 [test/runtime-integration.mjs](test/runtime-integration.mjs) 和 [test/profile-persistence-integration.mjs](test/profile-persistence-integration.mjs)。设置 `DSH_RUNTIME_DIR` 为已安装的 dsh 目录，使用对应 Node 运行；Desktop 需以 `ELECTRON_RUN_AS_NODE=1` 调用应用可执行文件。后者只在独立临时 profile 中写盘并自动清理，不修改用户配置。
+
 诊断行为评估说明见 [evals/README.md](evals/README.md)。
 
 推送源码后，通过 Harness 更新安装；运行中的预设不会随 Git 推送自动更新。
