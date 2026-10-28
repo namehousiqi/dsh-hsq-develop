@@ -45,8 +45,9 @@ window.__ModuleLoader__.load({
           try {
             const next = await request(path)
             if (!mounted.current || sequence.current !== id) return
-            if (preserve) setData(previous => ({ ...next, selections: previous.selections, revision: previous.revision }))
+            if (preserve && data) setData(previous => ({ ...next, selections: previous.selections, revision: previous.revision }))
             else { setData(next); setDraft(next.selections) }
+            setCwd(path)
           } catch (e) { if (mounted.current && sequence.current === id) setError(e.message) }
           finally { if (mounted.current && sequence.current === id) setBusy(false) }
         }
@@ -68,7 +69,7 @@ window.__ModuleLoader__.load({
           finally { if (mounted.current) setBusy(false) }
         }
         async function chooseDirectory() {
-          try { const path = await ctx.uiWorkspace.pickDirectory(); if (path && mounted.current) { setCwd(path); load(path, true) } }
+          try { const path = await ctx.uiWorkspace.pickDirectory(); if (path && mounted.current) load(path, true) }
           catch (e) { setError(e.message) }
         }
         const selected = new Set(draft.map(s => s.name))
@@ -81,7 +82,7 @@ window.__ModuleLoader__.load({
         return h('section', { className: 'hsq-settings', 'aria-label': t('title'), 'aria-busy': busy },
           h('style', null, CSS),
           h('h2', null, t('title')), h('p', { className: 'hsq-muted' }, t('subtitle')),
-          h('div', { className: 'hsq-directory' }, h('span', { className: 'hsq-muted hsq-path' }, cwd || t('userOnly')), button(t('project'), chooseDirectory, { className: 'hsq-button hsq-small' }), cwd && button(t('useUser'), () => { setCwd(null); load(null, true) }, { className: 'hsq-button hsq-small' }), button(t('reload'), () => load(cwd, !!data), { className: 'hsq-button hsq-small' })),
+          h('div', { className: 'hsq-directory' }, h('span', { className: 'hsq-muted hsq-path' }, cwd || t('userOnly')), button(t('project'), chooseDirectory, { className: 'hsq-button hsq-small' }), cwd && button(t('useUser'), () => load(null, true), { className: 'hsq-button hsq-small' }), button(t('reload'), () => load(cwd, !!data), { className: 'hsq-button hsq-small' })),
           error && h('p', { className: 'hsq-error', role: 'alert' }, error, ' ', button(t('retry'), () => load(cwd))),
           notice && h('p', { className: 'hsq-success', role: 'status' }, notice),
           data?.complete === false && h('p', { className: 'hsq-warn', role: 'status' }, t('incomplete')),

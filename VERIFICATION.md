@@ -7,6 +7,7 @@
 - 使用已安装 Harness 的 Electron Node 模式运行 test/runtime-integration.mjs，以真实 Cordis Context、Loader、skills、agentPresets 和 scope 完成挂载与保存重载验证；没有启动服务器、模型会话或写入真实 profile。外部 provider 使用两项固定测试技能；发现目录可见未选技能，模型目录只见已启用项；清空后新作用域仅保留8内置项，旧作用域仍能加载原已选技能；全局目录没有泄漏，路由重载没有重复注册。
 - 该集成检查发现并修正了依赖重载时序：profile reconcile 返回后，预设 owner 仍可能在挂载。保存接口等待新 owner 就绪，并继续检查原生预设诊断后才返回成功。
 - 页面只使用主题 token、原生 settings.section 与 Host 目录选择器。Client JavaScript 语法及 bundle 导出已检查；尚未完成当前 GUI 的实际渲染、明暗主题和点击往返验证。
+- 继续验证时，实时 settings.section 仍无 hsq-develop 入口。ego-browser 在当前 GUI URL 返回 authentication required，已 handOff 给用户，未尝试读取认证令牌或绕过登录；浏览器验证需重启及登录后继续。源码检查修正了项目目录切换失败时标签先更新、目录结果仍为旧值的问题，现在成功读取后才切换标签。
 - 本地链接安装成功，但安装器返回 application=restart-required、restartReason=unmanaged-plugin。当前进程的旧插件仍在运行；必须重启 DSH 后检查新服务、真实 slot 和页面行为。不能将上述隔离集成测试当成当前 GUI 已生效的证据。
 
 ## 0.2.2 根因诊断深度（2026-10-27）
