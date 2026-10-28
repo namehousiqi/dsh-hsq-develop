@@ -42,7 +42,7 @@ github:namehousiqi/dsh-hsq-develop
 
 打开 Harness **设置 → HSQ 开发**，点击“添加技能”，搜索本机技能并勾选。列表支持启停、移除和保存；八个内置工作流始终保留。
 
-首次升级保留 `ui-ux-pro-max`、`archify`、`ego-browser`、`choerodon-kanban` 四项选择。项目技能可通过“选择项目目录”发现；未找到的已选技能会保留配置，直到对应目录可用。
+首次升级保留 `ui-ux-pro-max`、`archify`、`ego-browser`、`choerodon-kanban` 四项选择。项目技能可通过“查找项目技能…”选择文件夹后发现；未找到的已选技能会保留配置，直到对应目录可用。
 
 保存后在新会话中生效，已有会话保留原预设修订。个人选择由 Harness profile 单独持久保存，不修改本仓库，也不会用旧的预设副本覆盖后续规则升级。停用保留选择，移除仅取消关联，不删除文件。
 
