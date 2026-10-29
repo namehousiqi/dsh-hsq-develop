@@ -19,7 +19,7 @@
 | 保留元数据、模型结果与诊断分层、避免二次序列化 | implement |
 | 终态、取消拒绝超时、重连重复乱序、持久化/UI | diagnose、implement |
 | 同根因相邻轻量搜索，专项/额外修复先确认 | implement、deliver |
-| ego-browser 可用性/先询问/已指定免重复问/实际证据 | implement、deliver |
+| 浏览器验证改为仅用户主动明确要求；不主动询问或建议，已明确免重复问，报告实际证据 | 常驻核心、implement、deliver |
 | 窗口函数、唯一索引、新字段分别授权 | 常驻核心、database |
 | SQL 正确性、真实规模、执行计划；API N+1/串行链/批量/失败一致性 | database |
 | 显式关键词、持续模式、退出优先、每次一步、计划变化确认 | 常驻核心、step |
