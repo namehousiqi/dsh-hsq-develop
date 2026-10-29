@@ -79,6 +79,7 @@ try {
   assert.equal(await skills.get('archify', options), undefined)
   assert.ok(await skills.get('not-selected', options))
   assert.ok(await skills.get('hsq-dev-review', options))
+  assert.ok((await skills.get('hsq-dev-product-ui', options)).content)
   await lease.dispose(); lease = undefined
   await writeBundle('Upgraded bundled rules')
   await reconcileProfilePatches(root, readProfilePatches('hsq-test', profile), 'hsq-test')

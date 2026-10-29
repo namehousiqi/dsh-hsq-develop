@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import { Readable } from 'node:stream'
 import { configurePreset, effectiveSelections, normalizeSelections, initialExternalSkills, revisionOf } from '../skill-settings-core.js'
 import { createManager, createRoute, readBody } from '../skill-settings-runtime.js'
-import { withSkillPolicy } from '../skill-policy-core.js'
+import { coreSkills, withSkillPolicy } from '../skill-policy-core.js'
 import ManagedPreset from '../preset-runtime.js'
 
 const selection = [{ name: 'choerodon-kanban', enabled: true }, { name: 'archify', enabled: false }]
@@ -21,7 +21,7 @@ test('migration keeps all four selections; disabled and removed entries persist 
   assert.deepEqual(effectiveSelections({}).map(s => s.name), [...initialExternalSkills])
   assert.deepEqual(effectiveSelections({ externalSkills: [] }), [])
   assert.deepEqual(effectiveSelections({ externalSkills: selection }), selection)
-  for (const rows of [[{ name: 'hsq-dev-review', enabled: false }], [...selection, selection[0]], [{ name: '../evil', enabled: true }], [{ name: 'archify', enabled: 'yes' }]]) assert.throws(() => normalizeSelections(rows))
+  for (const rows of [...coreSkills.map(name => [{ name, enabled: false }]), [...selection, selection[0]], [{ name: '../evil', enabled: true }], [{ name: 'archify', enabled: 'yes' }]]) assert.throws(() => normalizeSelections(rows))
 })
 
 test('policy generations keep old sessions unchanged and protect built-ins', () => {
@@ -33,7 +33,7 @@ test('policy generations keep old sessions unchanged and protect built-ins', () 
   assert.equal(oldPolicy.allowsSkill('choerodon-kanban'), true)
   assert.equal(oldPolicy.allowsSkill('archify'), false)
   assert.equal(nextPolicy.allowsSkill('choerodon-kanban'), false)
-  assert.equal(nextPolicy.allowsSkill('hsq-dev-review'), true)
+  for (const name of coreSkills) assert.equal(nextPolicy.allowsSkill(name), true)
   assert.equal(oldPolicy.allowsSkill('choerodon-kanban'), true)
   assert.equal(old.plugins[0].config.prefix, 'current bundled rules')
   assert.deepEqual(old.plugins[1].config[1].disabled, definition.plugins[1].config[1].disabled)

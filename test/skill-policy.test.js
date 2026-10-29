@@ -10,12 +10,13 @@ class Registry {
 }
 const Policy = withSkillPolicy(Registry)
 
-test('default policy keeps eight workflows and blocks external discovery and direct loading', async () => {
+test('default policy keeps all built-in workflows and blocks external discovery and direct loading', async () => {
   const registry = new Policy({})
   assert.deepEqual((await registry.list()).map(s => s.name), coreSkills)
   assert.equal(await registry.get('hsq-develop'), undefined)
   assert.equal(await registry.get('ego-browser'), undefined)
   assert.ok(await registry.get('hsq-dev-review'))
+  assert.ok(await registry.get('hsq-dev-product-ui'))
   assert.equal((await registry.snapshot()).complete, false)
 })
 
@@ -26,12 +27,12 @@ test('exact allowlist adds only chosen skills and does not mutate other registry
   assert.ok(await allowed.get('ego-browser'))
   assert.equal(await allowed.get('frontend-design'), undefined)
   assert.ok(await other.get('frontend-design'))
-  assert.equal(other.items.length, 11)
+  assert.equal(other.items.length, coreSkills.length + 3)
 })
 
 test('explicit allow-all restores discovery and loading without deleting core workflows', async () => {
   const registry = new Policy({}, { allowAllSkills: true })
-  assert.equal((await registry.list()).length, 11)
+  assert.equal((await registry.list()).length, coreSkills.length + 3)
   assert.ok(await registry.get('hsq-develop'))
 })
 

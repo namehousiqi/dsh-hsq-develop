@@ -5,7 +5,7 @@ import { apply as applySettings, inject as settingsServices } from './skill-sett
 export const name = 'hsq-development-workflows'
 export const inject = ['skills']
 
-const names = ['design', 'diagnose', 'implement', 'database', 'review', 'git', 'step', 'deliver']
+const names = ['design', 'product-ui', 'diagnose', 'implement', 'database', 'review', 'git', 'step', 'deliver']
 
 /** Read all workflow resources before registering so missing assets fail without a partial catalog. */
 export function loadWorkflows() {
@@ -32,7 +32,7 @@ export function loadWorkflows() {
 
 /** Register only in the selecting preset's scope; dispose all registrations on unload or rollback. */
 export function apply(ctx, config = {}) {
-  // The Host row owns the settings UI; scoped rows only register the eight workflows.
+  // The Host row owns the settings UI; scoped rows only register the built-in workflows.
   if (config.settingsUI === true) return ctx.inject(settingsServices, child => applySettings(child, config))
   const workflows = loadWorkflows()
   return ctx.effect(() => {

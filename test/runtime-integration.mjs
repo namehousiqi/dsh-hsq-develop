@@ -1,5 +1,6 @@
 // Optional integration against the installed Harness runtime; no server or profile writes.
 import assert from 'node:assert/strict'
+import { coreSkills } from '../skill-policy-core.js'
 import { pathToFileURL } from 'node:url'
 const runtimeDir = process.env.DSH_RUNTIME_DIR
 if (!runtimeDir) throw new Error('Set DSH_RUNTIME_DIR to the installed dsh directory')
@@ -50,7 +51,8 @@ try {
   oldAgent = createScope(root, {})
   await root.agentPresets.mount(oldAgent.ctx, 'hsq-develop')
   const oldSkills = root.agentPresets.serviceFor({ ctx: oldAgent.ctx }, 'skills')
-  assert.equal((await oldSkills.list({ scope: scopeOf(oldAgent.ctx) })).length, 9)
+  assert.deepEqual((await oldSkills.list({ scope: scopeOf(oldAgent.ctx) })).map(s => s.name).sort(), [...coreSkills, 'archify'].sort())
+  assert.ok((await oldSkills.get('hsq-dev-product-ui', { scope: scopeOf(oldAgent.ctx) })).content)
   assert.ok(await oldSkills.get('archify', { scope: scopeOf(oldAgent.ctx) }))
   assert.equal(await oldSkills.get('not-selected', { scope: scopeOf(oldAgent.ctx) }), undefined)
   await root.hsqSkillSettings.save({ selections: [], revision: state.revision })
@@ -59,7 +61,8 @@ try {
   newAgent = createScope(root, {})
   await root.agentPresets.mount(newAgent.ctx, 'hsq-develop')
   const newSkills = root.agentPresets.serviceFor({ ctx: newAgent.ctx }, 'skills')
-  assert.equal((await newSkills.list({ scope: scopeOf(newAgent.ctx) })).length, 8)
+  assert.deepEqual((await newSkills.list({ scope: scopeOf(newAgent.ctx) })).map(s => s.name).sort(), [...coreSkills].sort())
+  assert.ok((await newSkills.get('hsq-dev-product-ui', { scope: scopeOf(newAgent.ctx) })).content)
   assert.equal(await newSkills.get('archify', { scope: scopeOf(newAgent.ctx) }), undefined)
   assert.ok(await oldSkills.get('archify', { scope: scopeOf(oldAgent.ctx) }), 'The retained Agent still uses the old revision')
   assert.equal((await root.skills.list()).length, 0)

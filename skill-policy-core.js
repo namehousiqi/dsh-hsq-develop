@@ -1,5 +1,5 @@
 export const coreSkills = Object.freeze(
-  ['design', 'diagnose', 'implement', 'database', 'review', 'git', 'step', 'deliver'].map(name => `hsq-dev-${name}`),
+  ['design', 'product-ui', 'diagnose', 'implement', 'database', 'review', 'git', 'step', 'deliver'].map(name => `hsq-dev-${name}`),
 )
 
 /** Keep discovery and both invocation paths on one policy without mutating provider data. */

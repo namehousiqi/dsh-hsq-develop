@@ -3,9 +3,9 @@ import assert from 'node:assert/strict'
 import { readFileSync, statSync } from 'node:fs'
 import { loadWorkflows, apply } from '../index.js'
 
-const expected = ['design', 'diagnose', 'implement', 'database', 'review', 'git', 'step', 'deliver'].map(x => `hsq-dev-${x}`)
+const expected = ['design', 'product-ui', 'diagnose', 'implement', 'database', 'review', 'git', 'step', 'deliver'].map(x => `hsq-dev-${x}`)
 
-test('all eight independent workflows ship with valid loadable resources below pruning threshold', () => {
+test('all nine independent workflows ship with valid loadable resources below pruning threshold', () => {
   const skills = loadWorkflows()
   assert.deepEqual(skills.map(s => s.name), expected)
   for (const skill of skills) {

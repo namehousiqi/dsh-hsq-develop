@@ -29,7 +29,8 @@ github:namehousiqi/dsh-hsq-develop
 
 | 工作流 | 职责 |
 | --- | --- |
-| `hsq-dev-design` | 需求澄清、设计、实施计划与任务委派 |
+| `hsq-dev-design` | 需求澄清、适度设计、生命周期与恢复成本、实施计划与任务委派 |
+| `hsq-dev-product-ui` | 业务文案、操作反馈、真实内容布局与按需局部原型 |
 | `hsq-dev-diagnose` | 持续调查、竞争解释验证、根因确认与性能测量 |
 | `hsq-dev-implement` | 最小完整实现、兼容性检查与行为验证 |
 | `hsq-dev-database` | SQL、数据模型、索引与 API 查询策略 |
@@ -38,9 +39,13 @@ github:namehousiqi/dsh-hsq-develop
 | `hsq-dev-step` | 显式逐步执行与阶段验收 |
 | `hsq-dev-deliver` | 行为影响、核心机制与验证结果 |
 
+已将对话中提炼的四组 vibe 偏好融入上述工作流，不需要再额外安装或叠加 `vibe-engineering`、`vibe-product-ui`、`vibe-debug-consistency`、`vibe-change-delivery`。设计检查生命周期与失败成本；UI 由 product-ui 配合通用设计技能；状态故障先 diagnose 再 implement；交付按需补齐配置、迁移及发版说明。小改动不强制原型，开发中的新功能不增加无用历史兼容，用户明确的验证限制仅适用于当前任务。
+
+原型请求不等于浏览器验证授权；窗口函数、唯一索引、新字段、Spec 实质冲突、Git 和显式逐步模式继续遵守原有规则。规则通过预设中的按需路由加载，属于模型指令，不是保证每轮行为的工具拦截器。
+
 ## 管理外部技能
 
-打开 Harness **设置 → HSQ 开发**，点击“添加技能”，搜索本机技能并勾选。列表支持启停、移除和保存；八个内置工作流始终保留。
+打开 Harness **设置 → HSQ 开发**，点击“添加技能”，搜索本机技能并勾选。列表支持启停、移除和保存；九个内置工作流始终保留。
 
 首次升级保留 `ui-ux-pro-max`、`archify`、`ego-browser`、`choerodon-kanban` 四项选择。项目技能可通过“查找项目技能…”选择文件夹后发现；未找到的已选技能会保留配置，直到对应目录可用。
 
